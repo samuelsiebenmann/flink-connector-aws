@@ -53,7 +53,7 @@ public class AWSExceptionClassifierUtil {
                 (err) -> {
                     Optional<? extends AwsServiceException> exceptionOptional =
                             ExceptionUtils.findThrowable(err, serviceExceptionType);
-                    if (exceptionOptional.isEmpty()) {
+                    if (!exceptionOptional.isPresent()) {
                         return false;
                     }
 
