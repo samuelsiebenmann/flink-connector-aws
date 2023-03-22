@@ -27,6 +27,7 @@ import software.amazon.awssdk.services.firehose.model.ResourceNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
+/** Unit tests for {@link AWSFirehoseExceptionClassifiers}. */
 public class AWSFirehoseExceptionClassifiersTest {
 
     private final FatalExceptionClassifier classifier =

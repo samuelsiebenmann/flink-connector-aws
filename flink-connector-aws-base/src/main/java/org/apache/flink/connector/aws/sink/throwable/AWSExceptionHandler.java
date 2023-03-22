@@ -39,12 +39,12 @@ public class AWSExceptionHandler {
     }
 
     /**
-     * Passes a given {@link Throwable} t to a given {@link Consumer<Exception>} consumer if the
-     * throwable is fatal. Returns `true` if the {@link Throwable} has been passed to the {@link
-     * Consumer<Exception>} (i.e. it is fatal) and `false` otherwise.
+     * Passes a given {@link Throwable} t to a given {@link Consumer} consumer if the throwable is
+     * fatal. Returns `true` if the {@link Throwable} has been passed to the {@link Consumer} (i.e.
+     * it is fatal) and `false` otherwise.
      *
      * @param t a {@link Throwable}
-     * @param consumer a {@link Consumer<Exception>} to call if the passed throwable t is fatal.
+     * @param consumer a {@link Consumer} to call if the passed throwable t is fatal.
      * @return `true` if t is fatal, `false` otherwise.
      */
     public boolean consumeIfFatal(Throwable t, Consumer<Exception> consumer) {
