@@ -18,6 +18,7 @@
 package org.apache.flink.connector.aws.sink.throwable;
 
 import org.apache.flink.connector.base.sink.throwable.FatalExceptionClassifier;
+
 import org.junit.jupiter.api.Test;
 import software.amazon.awssdk.awscore.exception.AwsErrorDetails;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
@@ -30,21 +31,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 public class AWSExceptionClassifierUtilTest {
 
     @Test
     public void shouldCreateFatalExceptionClassifierThatClassifiesAsFatalIfMatchingErrorCode() {
         // given
-        AwsServiceException exception = StsException.builder()
-                .awsErrorDetails(AwsErrorDetails.builder().errorCode("NotAuthorizedException").build())
-                .build();
+        AwsServiceException exception =
+                StsException.builder()
+                        .awsErrorDetails(
+                                AwsErrorDetails.builder()
+                                        .errorCode("NotAuthorizedException")
+                                        .build())
+                        .build();
 
-        FatalExceptionClassifier classifier = AWSExceptionClassifierUtil.withAWSServiceErrorCode(
-                StsException.class,
-                "NotAuthorizedException",
-                (err) -> new RuntimeException()
-        );
+        FatalExceptionClassifier classifier =
+                AWSExceptionClassifierUtil.withAWSServiceErrorCode(
+                        StsException.class,
+                        "NotAuthorizedException",
+                        (err) -> new RuntimeException());
 
         // when (FatalExceptionClassifier#isFatal returns false if exception is fatal)
         boolean isFatal = !classifier.isFatal(exception, (err) -> {});
@@ -54,17 +58,20 @@ public class AWSExceptionClassifierUtilTest {
     }
 
     @Test
-    public void shouldCreateFatalExceptionClassifierThatClassifiesAsNonFatalIfNotMatchingErrorCode() {
+    public void
+            shouldCreateFatalExceptionClassifierThatClassifiesAsNonFatalIfNotMatchingErrorCode() {
         // given
-        AwsServiceException exception = StsException.builder()
-                .awsErrorDetails(AwsErrorDetails.builder().errorCode("SomeOtherException").build())
-                .build();
+        AwsServiceException exception =
+                StsException.builder()
+                        .awsErrorDetails(
+                                AwsErrorDetails.builder().errorCode("SomeOtherException").build())
+                        .build();
 
-        FatalExceptionClassifier classifier = AWSExceptionClassifierUtil.withAWSServiceErrorCode(
-                StsException.class,
-                "NotAuthorizedException",
-                (err) -> new RuntimeException()
-        );
+        FatalExceptionClassifier classifier =
+                AWSExceptionClassifierUtil.withAWSServiceErrorCode(
+                        StsException.class,
+                        "NotAuthorizedException",
+                        (err) -> new RuntimeException());
 
         // when (FatalExceptionClassifier#isFatal returns true if exception is non-fatal)
         boolean isFatal = !classifier.isFatal(exception, (err) -> {});
@@ -76,16 +83,20 @@ public class AWSExceptionClassifierUtilTest {
     @Test
     public void shouldCreateFatalExceptionClassifierThatAppliesThrowableMapper() {
         // given
-        AwsServiceException exception = StsException.builder()
-                .awsErrorDetails(AwsErrorDetails.builder().errorCode("NotAuthorizedException").build())
-                .build();
+        AwsServiceException exception =
+                StsException.builder()
+                        .awsErrorDetails(
+                                AwsErrorDetails.builder()
+                                        .errorCode("NotAuthorizedException")
+                                        .build())
+                        .build();
 
-        Exception mappedException = new RuntimeException("shouldCreateFatalExceptionClassifierThatAppliesThrowableMapper");
-        FatalExceptionClassifier classifier = AWSExceptionClassifierUtil.withAWSServiceErrorCode(
-                StsException.class,
-                "NotAuthorizedException",
-                (err) -> mappedException
-        );
+        Exception mappedException =
+                new RuntimeException(
+                        "shouldCreateFatalExceptionClassifierThatAppliesThrowableMapper");
+        FatalExceptionClassifier classifier =
+                AWSExceptionClassifierUtil.withAWSServiceErrorCode(
+                        StsException.class, "NotAuthorizedException", (err) -> mappedException);
 
         Set<Exception> consumedExceptions = new HashSet<>();
 

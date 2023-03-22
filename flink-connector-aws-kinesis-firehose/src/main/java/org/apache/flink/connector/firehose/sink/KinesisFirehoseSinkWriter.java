@@ -83,14 +83,14 @@ class KinesisFirehoseSinkWriter<InputT> extends AsyncSinkWriter<InputT, Record> 
 
     private static final AWSExceptionHandler FIREHOSE_EXCEPTION_HANDLER =
             AWSExceptionHandler.withClassifier(
-                FatalExceptionClassifier.createChain(
-                        getInterruptedExceptionClassifier(),
-                        getInvalidCredentialsExceptionClassifier(),
-                        AWSFirehoseExceptionClassifiers.getResourceNotFoundExceptionClassifier(),
-                        AWSFirehoseExceptionClassifiers.getAccessDeniedExceptionClassifier(),
-                        AWSFirehoseExceptionClassifiers.getNotAuthorizedExceptionClassifier(),
-                        getSdkClientMisconfiguredExceptionClassifier())
-            );
+                    FatalExceptionClassifier.createChain(
+                            getInterruptedExceptionClassifier(),
+                            getInvalidCredentialsExceptionClassifier(),
+                            AWSFirehoseExceptionClassifiers
+                                    .getResourceNotFoundExceptionClassifier(),
+                            AWSFirehoseExceptionClassifiers.getAccessDeniedExceptionClassifier(),
+                            AWSFirehoseExceptionClassifiers.getNotAuthorizedExceptionClassifier(),
+                            getSdkClientMisconfiguredExceptionClassifier()));
 
     private final Counter numRecordsOutErrorsCounter;
 
